@@ -1,0 +1,37 @@
+shutdownTimeout: 5s
+
+server:
+  port: "8080"
+  writeTimeout: 10s
+  readTimeout: 10s
+  idleTimeout: 10s
+
+
+dataBase:
+  username: 'root'
+  password: 'rpass'
+  address: 'smartway_pg:5432'
+  dBName: 'smartway_db'
+  params: 'pool_max_conns=10&pool_max_conn_lifetime=3m'
+
+demoAccountAirlines:
+  - code: 'SU'
+    name: 'Аэрофлот'
+  - code: 'S7'
+    name: 'S7'
+  - code: 'FZ'
+    name: 'Flydubai'
+  - code: 'N4'
+    name: 'Nordwind Airlines'
+  - code: 'JB'
+    name: 'JetBlue'
+  - code: 'WZ'
+    name: 'Wizz Air'
+  - code: 'KV'
+    name: 'КрасАвиа'
+  - code: 'U6'
+    name: 'Уральские авиалинии'
+  - code: 'UT'
+    name: 'ЮТэйр'
+  - code: '5N'
+    name: 'SmartAvia'
