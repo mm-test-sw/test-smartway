@@ -38,7 +38,7 @@ func (r airlineRepository) DeleteAirline(ctx context.Context, code string) error
 		return err
 	}
 
-	_, err = tx.Exec(ctx, `delete from airline_provider where airlineId=$1`, code)
+	_, err = tx.Exec(ctx, `delete from airline_provider where airline_id=$1`, code)
 	if err != nil {
 		return err
 	}
