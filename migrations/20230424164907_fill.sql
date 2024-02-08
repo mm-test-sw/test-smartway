@@ -53,18 +53,18 @@ INSERT INTO schema_provider (schema_id, provider_id) VALUES (2, 'RS');
 -- Заполнение таблицы `airlineProvider`
 --
 
-INSERT INTO airline_provider (airline_id, provider_id) VALUES ('AA', 'FZ');
-INSERT INTO airline_provider (airline_id, provider_id) VALUES ('AA', 'JB');
-INSERT INTO airline_provider (airline_id, provider_id) VALUES ('AA', 'SJ');
-INSERT INTO airline_provider (airline_id, provider_id) VALUES ('IF', 'SU');
-INSERT INTO airline_provider (airline_id, provider_id) VALUES ('IF', 'S7');
-INSERT INTO airline_provider (airline_id, provider_id) VALUES ('IF', 'FZ');
-INSERT INTO airline_provider (airline_id, provider_id) VALUES ('IF', 'N4');
-INSERT INTO airline_provider (airline_id, provider_id) VALUES ('IF', 'JB');
-INSERT INTO airline_provider (airline_id, provider_id) VALUES ('IF', 'WZ');
-INSERT INTO airline_provider (airline_id, provider_id) VALUES ('RS', 'SU');
-INSERT INTO airline_provider (airline_id, provider_id) VALUES ('RS', 'S7');
-INSERT INTO airline_provider (airline_id, provider_id) VALUES ('RS', 'KV');
-INSERT INTO airline_provider (airline_id, provider_id) VALUES ('RS', 'U6');
-INSERT INTO airline_provider (airline_id, provider_id) VALUES ('RS', 'UT');
-INSERT INTO airline_provider (airline_id, provider_id) VALUES ('RS', '5N');
+INSERT INTO airline_provider (airline_id, provider_id) VALUES ('FZ', 'AA');
+INSERT INTO airline_provider (airline_id, provider_id) VALUES ('JB', 'AA');
+INSERT INTO airline_provider (airline_id, provider_id) VALUES ('SJ', 'AA');
+INSERT INTO airline_provider (airline_id, provider_id) VALUES ('SU', 'IF');
+INSERT INTO airline_provider (airline_id, provider_id) VALUES ('S7', 'IF');
+INSERT INTO airline_provider (airline_id, provider_id) VALUES ('FZ', 'IF');
+INSERT INTO airline_provider (airline_id, provider_id) VALUES ('N4', 'IF');
+INSERT INTO airline_provider (airline_id, provider_id) VALUES ('JB', 'IF');
+INSERT INTO airline_provider (airline_id, provider_id) VALUES ('WZ', 'IF');
+INSERT INTO airline_provider (airline_id, provider_id) VALUES ('SU', 'RS');
+INSERT INTO airline_provider (airline_id, provider_id) VALUES ('S7', 'RS');
+INSERT INTO airline_provider (airline_id, provider_id) VALUES ('KV', 'RS');
+INSERT INTO airline_provider (airline_id, provider_id) VALUES ('U6', 'RS');
+INSERT INTO airline_provider (airline_id, provider_id) VALUES ('UT', 'RS');
+INSERT INTO airline_provider (airline_id, provider_id) VALUES ('5N', 'RS');
