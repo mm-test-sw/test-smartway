@@ -27,7 +27,7 @@ func (r airlineRepository) InsertAirline(ctx context.Context, airline *entity.Ai
 
 func (r airlineRepository) DeleteAirline(ctx context.Context, code string) error {
 
-	tx, err := r.db.BeginTx(ctx, pgx.TxOptions{})
+	tx, err := r.db.Begin(ctx)
 	if err != nil {
 		return err
 	}
@@ -53,7 +53,7 @@ func (r airlineRepository) DeleteAirline(ctx context.Context, code string) error
 
 func (r airlineRepository) ReplaceAirlineProviders(ctx context.Context, airlineProviders *entity.AirlineProviders) (*entity.AirlineProviders, error) {
 
-	tx, err := r.db.BeginTx(ctx, pgx.TxOptions{})
+	tx, err := r.db.Begin(ctx)
 	if err != nil {
 		return nil, err
 	}

@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"test-smartway/internal/entity"
 )
@@ -27,7 +26,7 @@ func (r providerRepository) InsertProvider(ctx context.Context, provider *entity
 
 func (r providerRepository) DeleteProvider(ctx context.Context, id string) error {
 
-	tx, err := r.db.BeginTx(ctx, pgx.TxOptions{})
+	tx, err := r.db.Begin(ctx)
 	if err != nil {
 		return err
 	}

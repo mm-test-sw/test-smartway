@@ -20,7 +20,7 @@ func (r schemaRepository) GetTx(ctx context.Context) (pgx.Tx, error) {
 
 func (r schemaRepository) InsertSchema(ctx context.Context, schema *entity.Schema) (*entity.Schema, error) {
 
-	tx, err := r.db.BeginTx(ctx, pgx.TxOptions{})
+	tx, err := r.db.Begin(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -108,7 +108,7 @@ func (r schemaRepository) TxReplaceSchemaProviders(ctx context.Context, tx pgx.T
 
 func (r schemaRepository) DeleteSchema(ctx context.Context, id string) error {
 
-	tx, err := r.db.BeginTx(ctx, pgx.TxOptions{})
+	tx, err := r.db.Begin(ctx)
 	if err != nil {
 		return err
 	}
