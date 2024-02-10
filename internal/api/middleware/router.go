@@ -6,21 +6,23 @@ import (
 	uuid2 "github.com/google/uuid"
 	"net/http"
 	"runtime/debug"
+	"test-smartway/internal/app/config"
+	"test-smartway/internal/entity"
 	"time"
 
 	"go.uber.org/zap"
 )
 
-type ctxKeyRequestID int
-
-const RequestIDKey ctxKeyRequestID = 0
-
 type Middleware struct {
 	logger *zap.Logger
+	cfg    *config.Config
 }
 
-func NewMiddleware(logger *zap.Logger) *Middleware {
-	return &Middleware{logger: logger}
+func NewMiddleware(logger *zap.Logger, cfg *config.Config) *Middleware {
+	return &Middleware{
+		logger: logger,
+		cfg:    cfg,
+	}
 }
 
 func (m *Middleware) PanicRecovery(next http.Handler) http.Handler {
@@ -38,7 +40,7 @@ func (m *Middleware) PanicRecovery(next http.Handler) http.Handler {
 				w.Write(resp)
 
 				m.logger.DPanic("Panic Recovery",
-					zap.Any("RequestId", r.Context().Value(RequestIDKey)),
+					zap.Any("RequestId", r.Context().Value(entity.RequestIDKey)),
 					zap.String("LeadTime", fmt.Sprintf("%.3f", time.Duration(time.Now().UnixNano()-timeStart.UnixNano()).Seconds())),
 					zap.String("RequestMethod", r.Method),
 					zap.Any("LogicError", err),
@@ -69,7 +71,19 @@ func (m *Middleware) RequestId(next http.Handler) http.Handler {
 	return http.HandlerFunc(
 		func(w http.ResponseWriter, r *http.Request) {
 			uuid, _ := uuid2.NewUUID()
-			r.WithContext(context.WithValue(r.Context(), RequestIDKey, uuid.String()))
+			r = r.WithContext(context.WithValue(r.Context(), entity.RequestIDKey, uuid.String()))
+
+			next.ServeHTTP(w, r)
+		},
+	)
+}
+
+func (m *Middleware) Timeout(next http.Handler) http.Handler {
+	return http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			ctx, cancel := context.WithTimeout(r.Context(), m.cfg.RequestTimeout)
+			defer cancel()
+			r = r.WithContext(ctx)
 
 			next.ServeHTTP(w, r)
 		},
@@ -84,7 +98,7 @@ func (m *Middleware) DebugLogger(next http.Handler) http.Handler {
 			next.ServeHTTP(w, r)
 
 			m.logger.Debug("Request Logger",
-				zap.Any("RequestId", r.Context().Value(RequestIDKey)),
+				zap.Any("RequestId", r.Context().Value(entity.RequestIDKey)),
 				zap.String("LeadTime", fmt.Sprintf("%.3f", time.Duration(time.Now().UnixNano()-timeStart.UnixNano()).Seconds())),
 				zap.String("RequestMethod", r.Method),
 				zap.String("URL", r.RequestURI),

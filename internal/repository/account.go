@@ -49,7 +49,8 @@ func (r accountRepository) SelectAirlinesByAccount(ctx context.Context, id strin
     left join schema_provider as sp on sp.schema_id = accounts.schema_id
     left join airline_provider as ap on ap.provider_id = sp.provider_id
     left join airlines on airlines.code = ap.airline_id
-    where accounts.id=$1`, id)
+    where accounts.id=$1
+    group by airlines.code`, id)
 	if err != nil {
 		return nil, err
 	}

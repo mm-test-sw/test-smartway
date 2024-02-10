@@ -5,6 +5,7 @@ server:
   writeTimeout: 10s
   readTimeout: 10s
   idleTimeout: 10s
+  requestTimeout: 10s
 
 
 dataBase:

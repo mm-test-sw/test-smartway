@@ -22,6 +22,7 @@ func RegisterAccountHandlers(router *mux.Router, service entity.IAccountService,
 	r := router.PathPrefix("/accounts").Subrouter()
 
 	r.Use(mw.PanicRecovery)
+	r.Use(mw.Timeout)
 	r.Use(mw.RequestId)
 	r.Use(mw.ContentTypeJSON)
 	r.Use(mw.DebugLogger)

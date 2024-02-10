@@ -7,7 +7,6 @@ import (
 	chiM "github.com/go-chi/chi/v5/middleware"
 	"go.uber.org/zap"
 	"net/http"
-	"test-smartway/internal/api/middleware"
 )
 
 var ErrorInternalServerMarshal, _ = json.Marshal(LogicError{ResponseMessage: "internal server error"})
@@ -54,7 +53,7 @@ func HandleError(ctx context.Context, logger *zap.Logger, err error) ([]byte, in
 		return logicErr.JsonMarshal(), logicErr.Code
 	}
 
-	logger.Error(err.Error(), zap.Any("RequestId", ctx.Value(middleware.RequestIDKey)), zap.Int("ResponseCode", http.StatusBadRequest))
+	logger.Error(err.Error(), zap.Any("RequestId", ctx.Value(RequestIDKey)), zap.Int("ResponseCode", http.StatusBadRequest))
 
 	return ErrorBadRequestMarshal, http.StatusBadRequest
 }

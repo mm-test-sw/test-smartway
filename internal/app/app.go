@@ -39,7 +39,7 @@ func Run(ctx context.Context, cfg *config.Config) {
 	accountService := service.NewAccountService(cfg, accountRepository)
 
 	// API
-	mw := middleware.NewMiddleware(logger)
+	mw := middleware.NewMiddleware(logger, cfg)
 	handler.RegisterAirlineHandlers(router, airlineService, logger, mw)
 	handler.RegisterProviderHandlers(router, providerService, logger, mw)
 	handler.RegisterSchemaHandlers(router, schemaService, logger, mw)

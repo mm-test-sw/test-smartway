@@ -5,7 +5,7 @@
 --
 CREATE TABLE airlines (
                            code varchar(2) PRIMARY KEY,
-                           name text NULL
+                           name text NOT NULL
 );
 
 --
@@ -13,7 +13,7 @@ CREATE TABLE airlines (
 --
 CREATE TABLE providers (
                             id varchar(2) PRIMARY KEY,
-                            name text NULL
+                            name text NOT NULL
 );
 
 --

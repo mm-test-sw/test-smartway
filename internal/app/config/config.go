@@ -18,10 +18,11 @@ type Config struct {
 }
 
 type Server struct {
-	Port         string        `yaml:"port" validate:"required"`
-	WriteTimeout time.Duration `yaml:"writeTimeout" validate:"required"`
-	ReadTimeout  time.Duration `yaml:"readTimeout" validate:"required"`
-	IdleTimeout  time.Duration `yaml:"idleTimeout" validate:"required"`
+	Port           string        `yaml:"port" validate:"required"`
+	WriteTimeout   time.Duration `yaml:"writeTimeout" validate:"required"`
+	ReadTimeout    time.Duration `yaml:"readTimeout" validate:"required"`
+	IdleTimeout    time.Duration `yaml:"idleTimeout" validate:"required"`
+	RequestTimeout time.Duration `yaml:"requestTimeout"  validate:"required"`
 }
 
 type DataBase struct {

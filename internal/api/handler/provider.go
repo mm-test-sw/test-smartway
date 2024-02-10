@@ -22,6 +22,7 @@ func RegisterProviderHandlers(router *mux.Router, service entity.IProviderServic
 	r := router.PathPrefix("/providers").Subrouter()
 
 	r.Use(mw.PanicRecovery)
+	r.Use(mw.Timeout)
 	r.Use(mw.RequestId)
 	r.Use(mw.ContentTypeJSON)
 	r.Use(mw.DebugLogger)

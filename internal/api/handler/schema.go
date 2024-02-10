@@ -22,6 +22,7 @@ func RegisterSchemaHandlers(router *mux.Router, service entity.ISchemaService, l
 	r := router.PathPrefix("/schemas").Subrouter()
 
 	r.Use(mw.PanicRecovery)
+	r.Use(mw.Timeout)
 	r.Use(mw.RequestId)
 	r.Use(mw.ContentTypeJSON)
 	r.Use(mw.DebugLogger)
