@@ -33,12 +33,12 @@ func (r airlineRepository) DeleteAirline(ctx context.Context, code string) error
 	}
 	defer tx.Rollback(ctx)
 
-	_, err = tx.Exec(ctx, `delete from airlines where code=$1`, code)
+	_, err = tx.Exec(ctx, `delete from airlines where code = $1`, code)
 	if err != nil {
 		return err
 	}
 
-	_, err = tx.Exec(ctx, `delete from airline_provider where airline_id=$1`, code)
+	_, err = tx.Exec(ctx, `delete from airline_provider where airline_id = $1`, code)
 	if err != nil {
 		return err
 	}
@@ -59,7 +59,7 @@ func (r airlineRepository) ReplaceAirlineProviders(ctx context.Context, airlineP
 	}
 	defer tx.Rollback(ctx)
 
-	_, err = tx.Exec(ctx, `delete from airline_provider where airline_id=$1`, airlineProviders.AirlineCode)
+	_, err = tx.Exec(ctx, `delete from airline_provider where airline_id = $1`, airlineProviders.AirlineCode)
 	if err != nil {
 		return nil, err
 	}
@@ -81,4 +81,14 @@ func (r airlineRepository) ReplaceAirlineProviders(ctx context.Context, airlineP
 	}
 
 	return airlineProviders, nil
+}
+func (r airlineRepository) CheckAirline(ctx context.Context, code string) (bool, error) {
+
+	rows, err := r.db.Query(ctx, `select * from airlines where code = $1`, code)
+	if err != nil {
+		return false, err
+	}
+	defer rows.Close()
+
+	return rows.Next(), nil
 }

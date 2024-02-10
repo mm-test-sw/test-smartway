@@ -7,14 +7,22 @@ import (
 )
 
 type schemaService struct {
-	schemaRepo entity.ISchemaRepository
+	schemaRepo         entity.ISchemaRepository
+	providerRepository entity.IProviderRepository
 }
 
-func NewSchemaService(schemaRepo entity.ISchemaRepository) entity.ISchemaService {
-	return &schemaService{schemaRepo: schemaRepo}
+func NewSchemaService(schemaRepo entity.ISchemaRepository, providerRepository entity.IProviderRepository) entity.ISchemaService {
+	return &schemaService{schemaRepo: schemaRepo, providerRepository: providerRepository}
 }
 
 func (s *schemaService) AddSchema(ctx context.Context, schema *entity.Schema) (*entity.Schema, error) {
+	ok, err := s.providerRepository.CheckProviders(ctx, schema.Providers)
+	if err != nil {
+		return nil, err
+	} else if !ok {
+		return nil, entity.NewLogicError(nil, "provider not exist", 400)
+	}
+
 	return s.schemaRepo.InsertSchema(ctx, schema)
 }
 

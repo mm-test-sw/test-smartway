@@ -82,6 +82,6 @@ func (h providerHandler) GetAirlines(w http.ResponseWriter, r *http.Request) {
 	}
 
 	resp, _ := json.Marshal(airlines)
-	w.WriteHeader(http.StatusCreated)
+	w.WriteHeader(http.StatusOK)
 	w.Write(resp)
 }

@@ -22,5 +22,13 @@ func (s *providerService) DeleteProvider(ctx context.Context, id string) error {
 }
 
 func (s *providerService) GetAirlines(ctx context.Context, id string) ([]entity.Airline, error) {
+
+	ok, err := s.providerRepo.CheckProvider(ctx, id)
+	if err != nil {
+		return nil, err
+	} else if !ok {
+		return nil, entity.NewLogicError(nil, "provider not exist", 400)
+	}
+
 	return s.providerRepo.SelectAirlinesByProvider(ctx, id)
 }

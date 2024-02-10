@@ -22,5 +22,13 @@ func (s *airlineService) DeleteAirline(ctx context.Context, code string) error {
 }
 
 func (s *airlineService) PutAirlineProviders(ctx context.Context, airlineProviders *entity.AirlineProviders) (*entity.AirlineProviders, error) {
+
+	ok, err := s.airlineRepo.CheckAirline(ctx, airlineProviders.AirlineCode)
+	if err != nil {
+		return nil, err
+	} else if !ok {
+		return nil, entity.NewLogicError(nil, "airline not exist", 400)
+	}
+
 	return s.airlineRepo.ReplaceAirlineProviders(ctx, airlineProviders)
 }

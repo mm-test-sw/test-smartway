@@ -26,7 +26,7 @@ func (r accountRepository) InsertAccount(ctx context.Context, account *entity.Ac
 
 func (r accountRepository) DeleteAccount(ctx context.Context, id string) error {
 
-	_, err := r.db.Exec(ctx, `delete from accounts where id=$1`, id)
+	_, err := r.db.Exec(ctx, `delete from accounts where id = $1`, id)
 	if err != nil {
 		return err
 	}
@@ -49,11 +49,12 @@ func (r accountRepository) SelectAirlinesByAccount(ctx context.Context, id strin
     left join schema_provider as sp on sp.schema_id = accounts.schema_id
     left join airline_provider as ap on ap.provider_id = sp.provider_id
     left join airlines on airlines.code = ap.airline_id
-    where accounts.id=$1
+    where accounts.id = $1
     group by airlines.code`, id)
 	if err != nil {
 		return nil, err
 	}
+	defer rows.Close()
 
 	var airlines []entity.Airline
 	var airline entity.Airline
@@ -66,4 +67,15 @@ func (r accountRepository) SelectAirlinesByAccount(ctx context.Context, id strin
 	}
 
 	return airlines, nil
+}
+
+func (r accountRepository) CheckAccount(ctx context.Context, id string) (bool, error) {
+
+	rows, err := r.db.Query(ctx, `select * from accounts where id = $1`, id)
+	if err != nil {
+		return false, err
+	}
+	defer rows.Close()
+
+	return rows.Next(), nil
 }

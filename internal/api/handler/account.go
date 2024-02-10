@@ -29,7 +29,7 @@ func RegisterAccountHandlers(router *mux.Router, service entity.IAccountService,
 
 	r.HandleFunc("", handler.AddAccount).Methods(http.MethodPost)
 	r.HandleFunc("/{id}", handler.DeleteAccount).Methods(http.MethodDelete)
-	r.HandleFunc("", handler.UpdateAccount).Methods(http.MethodPut)
+	r.HandleFunc("", handler.PutAccount).Methods(http.MethodPut)
 	r.HandleFunc("/{id}/airlines", handler.GetAirlines).Methods(http.MethodGet)
 }
 
@@ -71,7 +71,7 @@ func (h accountHandler) DeleteAccount(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-func (h accountHandler) UpdateAccount(w http.ResponseWriter, r *http.Request) {
+func (h accountHandler) PutAccount(w http.ResponseWriter, r *http.Request) {
 	account := new(entity.Account)
 
 	err := json.NewDecoder(r.Body).Decode(account)
@@ -82,7 +82,7 @@ func (h accountHandler) UpdateAccount(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	account, err = h.accountService.UpdateAccount(r.Context(), account)
+	account, err = h.accountService.PutAccount(r.Context(), account)
 	if err != nil {
 		resp, code := entity.HandleError(r.Context(), h.logger, err)
 		w.WriteHeader(code)

@@ -12,6 +12,8 @@ type IProviderRepository interface {
 	InsertProvider(ctx context.Context, provider *Provider) (*Provider, error)
 	DeleteProvider(ctx context.Context, id string) error
 	SelectAirlinesByProvider(ctx context.Context, id string) ([]Airline, error)
+	CheckProviders(ctx context.Context, ids []string) (bool, error)
+	CheckProvider(ctx context.Context, id string) (bool, error)
 }
 
 type Provider struct {

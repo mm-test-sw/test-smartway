@@ -21,6 +21,7 @@ type ISchemaRepository interface {
 	TxReplaceSchemaProviders(ctx context.Context, tx pgx.Tx, id int, providers []string) error
 	DeleteSchema(ctx context.Context, id string) error
 	IsSchemeAssignedToAccount(ctx context.Context, id string) (bool, error)
+	CheckSchema(ctx context.Context, id string) (bool, error)
 }
 
 type Schema struct {

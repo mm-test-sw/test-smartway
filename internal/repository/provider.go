@@ -32,12 +32,12 @@ func (r providerRepository) DeleteProvider(ctx context.Context, id string) error
 	}
 	defer tx.Rollback(ctx)
 
-	_, err = tx.Exec(ctx, `delete from providers where id=$1`, id)
+	_, err = tx.Exec(ctx, `delete from providers where id = $1`, id)
 	if err != nil {
 		return err
 	}
 
-	_, err = tx.Exec(ctx, `delete from airline_provider where provider_id=$1`, id)
+	_, err = tx.Exec(ctx, `delete from airline_provider where provider_id = $1`, id)
 	if err != nil {
 		return err
 	}
@@ -54,10 +54,11 @@ func (r providerRepository) SelectAirlinesByProvider(ctx context.Context, id str
 
 	rows, err := r.db.Query(ctx, `select airlines.code, airlines.name from airline_provider as ap
     left join airlines on airlines.code = ap.airline_id
-    where ap.provider_id=$1`, id)
+    where ap.provider_id = $1`, id)
 	if err != nil {
 		return nil, err
 	}
+	defer rows.Close()
 
 	var airlines []entity.Airline
 	var airline entity.Airline
@@ -70,4 +71,31 @@ func (r providerRepository) SelectAirlinesByProvider(ctx context.Context, id str
 	}
 
 	return airlines, nil
+}
+
+func (r providerRepository) CheckProviders(ctx context.Context, ids []string) (bool, error) {
+
+	rows, err := r.db.Query(ctx, `select * from providers where id = any($1)`, ids)
+	if err != nil {
+		return false, err
+	}
+	defer rows.Close()
+
+	var counter int
+	for rows.Next() {
+		counter++
+	}
+
+	return counter == len(ids), nil
+}
+
+func (r providerRepository) CheckProvider(ctx context.Context, id string) (bool, error) {
+
+	rows, err := r.db.Query(ctx, `select * from providers where id = $1`, id)
+	if err != nil {
+		return false, err
+	}
+	defer rows.Close()
+
+	return rows.Next(), nil
 }

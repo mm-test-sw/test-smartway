@@ -7,7 +7,6 @@ server:
   idleTimeout: 10s
   requestTimeout: 10s
 
-
 dataBase:
   username: 'root'
   password: 'rpass'

@@ -5,7 +5,7 @@ import "context"
 type IAccountService interface {
 	AddAccount(ctx context.Context, account *Account) (*Account, error)
 	DeleteAccount(ctx context.Context, id string) error
-	UpdateAccount(ctx context.Context, account *Account) (*Account, error)
+	PutAccount(ctx context.Context, account *Account) (*Account, error)
 	GetAirlines(ctx context.Context, id string) ([]Airline, error)
 }
 
@@ -14,6 +14,7 @@ type IAccountRepository interface {
 	DeleteAccount(ctx context.Context, id string) error
 	UpdateAccount(ctx context.Context, account *Account) (*Account, error)
 	SelectAirlinesByAccount(ctx context.Context, id string) ([]Airline, error)
+	CheckAccount(ctx context.Context, id string) (bool, error)
 }
 
 type Account struct {

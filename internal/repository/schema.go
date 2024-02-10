@@ -14,6 +14,7 @@ type schemaRepository struct {
 func NewSchemaRepository(db *pgxpool.Pool) entity.ISchemaRepository {
 	return &schemaRepository{db: db}
 }
+
 func (r schemaRepository) GetTx(ctx context.Context) (pgx.Tx, error) {
 	return r.db.Begin(ctx)
 }
@@ -54,10 +55,11 @@ func (r schemaRepository) SelectSchemaByName(ctx context.Context, name string) (
 
 	rows, err := r.db.Query(ctx, `select id, name, sp.provider_id from schemas 
     left join schema_provider as sp on schema_id = id
-    where name=$1`, name)
+    where name = $1`, name)
 	if err != nil {
 		return nil, err
 	}
+	defer rows.Close()
 
 	var schema entity.Schema
 	var provider string
@@ -87,7 +89,7 @@ func (r schemaRepository) TxUpdateSchemaName(ctx context.Context, tx pgx.Tx, id 
 
 func (r schemaRepository) TxReplaceSchemaProviders(ctx context.Context, tx pgx.Tx, id int, providers []string) error {
 
-	_, err := tx.Exec(ctx, `delete from schema_provider where schema_id=$1`, id)
+	_, err := tx.Exec(ctx, `delete from schema_provider where schema_id = $1`, id)
 	if err != nil {
 		return err
 	}
@@ -138,6 +140,7 @@ func (r schemaRepository) IsSchemeAssignedToAccount(ctx context.Context, id stri
 	if err != nil {
 		return false, err
 	}
+	defer rows.Close()
 
 	return rows.Next(), nil
 }
@@ -146,10 +149,11 @@ func (r schemaRepository) TxSelectSchema(ctx context.Context, tx pgx.Tx, id int)
 
 	rows, err := tx.Query(ctx, `select id, name, sp.provider_id from schemas 
     left join schema_provider as sp on schema_id = id
-    where id=$1`, id)
+    where id = $1`, id)
 	if err != nil {
 		return nil, err
 	}
+	defer rows.Close()
 
 	var schema entity.Schema
 	var provider string
@@ -165,4 +169,15 @@ func (r schemaRepository) TxSelectSchema(ctx context.Context, tx pgx.Tx, id int)
 	}
 
 	return &schema, nil
+}
+
+func (r schemaRepository) CheckSchema(ctx context.Context, id string) (bool, error) {
+
+	rows, err := r.db.Query(ctx, `select * from schemas where id = $1`, id)
+	if err != nil {
+		return false, err
+	}
+	defer rows.Close()
+
+	return rows.Next(), nil
 }

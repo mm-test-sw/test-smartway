@@ -35,8 +35,8 @@ func Run(ctx context.Context, cfg *config.Config) {
 	// Service
 	airlineService := service.NewAirlineService(airlineRepository)
 	providerService := service.NewProviderService(providerRepository)
-	schemaService := service.NewSchemaService(schemaRepository)
-	accountService := service.NewAccountService(cfg, accountRepository)
+	schemaService := service.NewSchemaService(schemaRepository, providerRepository)
+	accountService := service.NewAccountService(cfg, accountRepository, schemaRepository)
 
 	// API
 	mw := middleware.NewMiddleware(logger, cfg)
