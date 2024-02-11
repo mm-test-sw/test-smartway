@@ -33,7 +33,7 @@ func Run(ctx context.Context, cfg *config.Config) {
 	accountRepository := repository.NewAccountRepository(db)
 
 	// Service
-	airlineService := service.NewAirlineService(airlineRepository)
+	airlineService := service.NewAirlineService(airlineRepository, providerRepository)
 	providerService := service.NewProviderService(providerRepository)
 	schemaService := service.NewSchemaService(schemaRepository, providerRepository)
 	accountService := service.NewAccountService(cfg, accountRepository, schemaRepository)

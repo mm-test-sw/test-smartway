@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"errors"
 	"test-smartway/internal/entity"
 )
 
@@ -33,6 +32,13 @@ func (s *schemaService) GetSchema(ctx context.Context, name string) (*entity.Sch
 func (s *schemaService) PatchSchema(ctx context.Context, schema *entity.Schema) (*entity.Schema, error) {
 	if len(schema.Name) == 0 && schema.Providers == nil {
 		return schema, nil
+	}
+
+	ok, err := s.providerRepository.CheckProviders(ctx, schema.Providers)
+	if err != nil {
+		return nil, err
+	} else if !ok {
+		return nil, entity.NewLogicError(nil, "provider not exist", 400)
 	}
 
 	tx, err := s.schemaRepo.GetTx(ctx)
@@ -74,7 +80,7 @@ func (s *schemaService) DeleteSchema(ctx context.Context, id string) error {
 	}
 
 	if isSchemeAssignedToAccount {
-		return entity.NewLogicError(errors.New("scheme assigned to account"), "scheme assigned to account", 400)
+		return entity.NewLogicError(nil, "scheme assigned to account", 400)
 	}
 
 	err = s.schemaRepo.DeleteSchema(ctx, id)

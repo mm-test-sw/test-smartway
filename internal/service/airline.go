@@ -6,11 +6,12 @@ import (
 )
 
 type airlineService struct {
-	airlineRepo entity.IAirlineRepository
+	airlineRepo  entity.IAirlineRepository
+	providerRepo entity.IProviderRepository
 }
 
-func NewAirlineService(airlineRepo entity.IAirlineRepository) entity.IAirlineService {
-	return &airlineService{airlineRepo: airlineRepo}
+func NewAirlineService(airlineRepo entity.IAirlineRepository, providerRepo entity.IProviderRepository) entity.IAirlineService {
+	return &airlineService{airlineRepo: airlineRepo, providerRepo: providerRepo}
 }
 
 func (s *airlineService) AddAirline(ctx context.Context, airline *entity.Airline) (*entity.Airline, error) {
@@ -28,6 +29,13 @@ func (s *airlineService) PutAirlineProviders(ctx context.Context, airlineProvide
 		return nil, err
 	} else if !ok {
 		return nil, entity.NewLogicError(nil, "airline not exist", 400)
+	}
+
+	ok, err = s.providerRepo.CheckProviders(ctx, airlineProviders.ProvidersId)
+	if err != nil {
+		return nil, err
+	} else if !ok {
+		return nil, entity.NewLogicError(nil, "provider not exist", 400)
 	}
 
 	return s.airlineRepo.ReplaceAirlineProviders(ctx, airlineProviders)
