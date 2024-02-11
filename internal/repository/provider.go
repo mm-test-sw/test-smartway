@@ -42,6 +42,11 @@ func (r providerRepository) DeleteProvider(ctx context.Context, id string) error
 		return err
 	}
 
+	_, err = tx.Exec(ctx, `delete from schema_provider where provider_id = $1`, id)
+	if err != nil {
+		return err
+	}
+
 	err = tx.Commit(ctx)
 	if err != nil {
 		return err

@@ -14,7 +14,7 @@
 Пример: /providers/TE
 5. PUT **/airlines/providers** - Изменение списка поставщиков (указывается список id) у указанной
    авиакомпании (указывается code) <br/>
-Пример: { "code": "TE", "providersId": ["TE", "TT", "YU"] }
+Пример: { "code": "TE", "providersId": ["IF", "RS"] }
 6. POST **/schemas** - Добавление схемы поиска <br/>
 Пример: { "id": 5, "name": "Test" }
 7. GET **/schemas/{name}** - Поиск схемы поиска по названию <br/>
@@ -26,7 +26,7 @@
 10. POST **/accounts** - Добавление аккаунта <br/>
 Пример: { "id": 666, "schemaId": 1 }
 11. PUT **/accounts** - Изменение схемы, назначенной аккаунту <br/>
-Пример: { "id": 666, "schemaId": 3 }
+Пример: { "id": 666, "schemaId": 2 }
 12. DELETE **/accounts/{id}** - Удаление аккаунта по Id <br/>
 Пример: /accounts/666
 13. GET **/accounts/{id}/airlines** - Получение списка авиакомпаний по id аккаунта <br/>
