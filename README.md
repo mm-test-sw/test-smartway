@@ -33,3 +33,6 @@
 Пример: /accounts/3/airlines
 14. GET **/providers/{id}/airlines** - Получение списка авиакомпаний по id поставщика <br/>
 Пример: /providers/RS/airlines
+
+
+test edit
